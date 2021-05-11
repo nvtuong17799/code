@@ -1,0 +1,60 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="magento_helloworld_post_listing_data_source" xsi:type="string">HelloWorldVirtualType</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="HelloWorldVirtualType" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magento_helloworld_post</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\HelloWorld\Model\ResourceModel\Post</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\HelloWorld\Controller\Index\Example">
+        <plugin name="Magento_HelloWorld_Plugin" type="Magento\HelloWorld\Plugin\ExamplePlugin" sortOrder="10" disabled="false"  />
+    </type>
+
+    <type name="Magento\HelloWorld\Controller\Index\Testb">
+        <arguments>
+            <argument name="test" xsi:type="array">
+                <item name="first" xsi:type="string">a123</item>
+                <item name="second" xsi:type="number">123</item>
+                <item name="third" xsi:type="array">
+                    <item name="firstChill" xsi:type="boolean">0</item>
+                    <item name="secondChill" xsi:type="null"/>
+                </item>
+                <item name="fourth" xsi:type="const">Magento\HelloWorld\Controller\Index\Testb::TEST</item>
+                <item name="fifth" xsi:type="object">Magento\HelloWorld\Controller\Index\TestObject</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\HelloWorld\Block\Test">
+        <arguments>
+            <argument name="test" xsi:type="array">
+                <item name="first" xsi:type="string">4123</item>
+                <item name="second" xsi:type="number">123</item>
+                <item name="third" xsi:type="array">
+                    <item name="firstChill" xsi:type="boolean">0</item>
+                    <item name="secondChill" xsi:type="null"/>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\HelloWorld\Model\Post">
+        <arguments>
+            <argument name="test" xsi:type="array">
+                <item name="first" xsi:type="string">1123</item>
+                <item name="second" xsi:type="number">123</item>
+                <item name="third" xsi:type="array">
+                    <item name="firstChill" xsi:type="boolean">0</item>
+                    <item name="secondChill" xsi:type="null"/>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var $block;
+ */
+$id = $block->getRequest()->getParam('id');
+?>
+<div class="price-box price-final_price">
+    <span class="price-container price-final_price tax weee">
+        <span id="custom-price"></span>
+    </span>
+</div>
+<div id="product-id" hidden><?= $id ?></div>
+
+<script type="text/x-magento-init">
+{
+    "#custom-price":
+    {
+        "Mageplaza_CustomPrice/js/customprice-js": {}
+    }
+}
+</script>
+
+<style>
+    #custom-price{
+        font-size: 1.4em;
+        font-weight: 600;
+        line-height: 16px;
+        white-space: nowrap;
+    }
+</style>
+

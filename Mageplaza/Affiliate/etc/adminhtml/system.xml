@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!--Su dung the tab nay de khai bao ra mot tab moi trong Configuration-->
+<!--        <tab id="Mageplaza_GiftCard" translate="label" sortOrder="50">-->
+<!--            <label>Mageplaza Extensions</label>-->
+<!--        </tab>-->
+        <section id="affiliate" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Affiliate</label>
+            <tab>mageplaza</tab>
+            <resource>Mageplaza_Affiliate::affiliate_configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable_affiliate" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Affiliate</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="select_static_block" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Select Register Static Block</label>
+                    <source_model>Mageplaza\Affiliate\Model\Config\Source\CmsBlock</source_model>
+                </field>
+                <field id="code_length" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Code Length</label>
+                    <comment>Affiliate Code</comment>
+                </field>
+                <field id="url_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Url Key</label>
+                </field>
+            </group>
+            <group id="rule" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Affiliate Rule</label>
+                <field id="enable_discount" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Apply Discount to Customer</label>
+                    <source_model>Mageplaza\Affiliate\Model\Config\Source\OptionsApplyDiscount</source_model>
+                </field>
+                <field id="discount_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" >
+                    <label>Discount Value</label>
+                    <validate>integer not-negative-amount</validate>
+                    <depends>
+<!--                        <field id="enable_discount" separator=",">fix_value,percentage</field>-->
+                        <field id="enable_discount" negative="1">no</field>
+                    </depends>
+                </field>
+                <field id="commission_type" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Commission Type</label>
+                    <source_model>Mageplaza\Affiliate\Model\Config\Source\OptionsCommissionType</source_model>
+                </field>
+                <field id="commission_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Commission Value</label>
+                    <validate>integer not-negative-amount</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

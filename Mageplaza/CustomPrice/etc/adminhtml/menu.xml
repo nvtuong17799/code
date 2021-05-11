@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Mageplaza_CustomPrice::customprice" title="Custom Price" module="Mageplaza_CustomPrice" sortOrder="80" resource="Mageplaza_CustomPrice::custom_price" parent="Magento_Backend::marketing"/>
+        <add id="Mageplaza_CustomPrice::rules" title="Manage Rules" module="Mageplaza_CustomPrice" sortOrder="10" parent="Mageplaza_CustomPrice::customprice" action="customprice/price/index" resource="Mageplaza_CustomPrice::customprice_configuration"/>
+    </menu>
+</config>

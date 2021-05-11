@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">My Affiliate Account</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Mageplaza\Affiliate\Block\frontend\Dashboard\Account" name="affiliate_dashboard_account" template="Mageplaza_Affiliate::affiliate/dashboard/account.phtml" cacheable="false"/>
+            <block class="Mageplaza\Affiliate\Block\frontend\Dashboard\History" name="affiliate_dashboard_history" template="Mageplaza_Affiliate::affiliate/dashboard/history.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

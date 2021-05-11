@@ -1,0 +1,42 @@
+<?php
+/** @var Mageplaza\Affiliate\Block\frontend\Dashboard\History $block */
+$history = $block->getHistory();
+?>
+<div class="block block-dashboard-info">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('History'))?></strong></div>
+    <div class="block-content">
+        <?php if ($history && sizeof($history)): ?>
+        <div class="table-wrapper orders-recent">
+            <table class="data table table-order-items recent" id="my-orders-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
+                    <th scope="col" class="col code"><?= $block->escapeHtml(__('Action')) ?></th>
+                    <th scope="col" class="col amount"><?= $block->escapeHtml(__('Commission')) ?></th>
+                    <th scope="col" class="col action"><?= $block->escapeHtml(__('Status')) ?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($history as $key => $value) : ?>
+                    <tr>
+                        <td class="col date"><?= $block->escapeHtml($block->formatDate($value['create_at'])) ?></td>
+                        <td class="col code"><?= $block->escapeHtml(
+                                ($value['is_admin_change'] == 1) ? 'Changed by Admin'
+                                    : 'Created from order #'.$value['order_increment_id']
+                            ) ?></td>
+                        <td class="col amount"><?= $block->escapeHtml($block->getCurrencyWithFormat($value['amount'])) ?></td>
+                        <td class="col action"><?= $block->escapeHtml(($value['status'])==1) ? 'Active' : 'Inactive' ?></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+            <?php if ($block->getPagerHtml()): ?>
+                <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+            <?php endif ?>
+        <?php else: ?>
+            <div class="message info empty"><span><?php echo __('No any history record.'); ?></span></div>
+        <?php endif ?>
+    </div>
+</div>
+

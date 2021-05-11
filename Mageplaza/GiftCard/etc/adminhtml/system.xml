@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!--Su dung the tab nay de khai bao ra mot tab moi trong Configuration-->
+<!--        <tab id="Mageplaza_GiftCard" translate="label" sortOrder="50">-->
+<!--            <label>Mageplaza Extensions</label>-->
+<!--        </tab>-->
+        <section id="giftcard" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Gift Card</label>
+            <tab>mageplaza</tab>
+            <resource>Mageplaza_GiftCard::giftcard_configuration</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="enable_giftcard" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enable Gift Card</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_checkout" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow used Gift Card at Checkout</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Set default shopping method in the Checkout process</comment>
+                </field>
+                <field id="enable_redeem" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Redeem Gift Card </label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Set default payment method in the Checkout process</comment>
+                </field>
+            </group>
+            <group id="code" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Code Configuration</label>
+                <field id="length" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Code Length</label>
+                    <validate>integer not-negative-amount</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

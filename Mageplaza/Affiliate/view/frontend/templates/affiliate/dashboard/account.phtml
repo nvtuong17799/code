@@ -1,0 +1,48 @@
+<?php
+/** @var Mageplaza\Affiliate\Block\frontend\Dashboard\Account $block */
+?>
+<div class="block block-dashboard-info">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Information')) ?></strong></div>
+    <?php if($block->getAccount()->getId()): ?>
+    <div class="block-content">
+        <div class="box box-information">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Balance')) ?></span>
+            </strong>
+            <div class="box-content">
+                <p>
+                    <?= $block->escapeHtml($block->getCurrencyWithFormat($block->getAccount()->getData('balance'))) ?><br>
+                </p>
+            </div>
+        </div>
+        <div class="box">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Refer Link')) ?></span>
+            </strong>
+            <div class="">
+                <input name="refer" type="text" id="refer" value="<?= $block->getLink() ?>" readonly>
+                <button onclick="copyToClipboard()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+    <?php else:
+        echo $block->getLayout()
+            ->createBlock('Magento\Cms\Block\Block')
+            ->setBlockId('login-data')
+            ->toHtml();
+    ?>
+        <button id="myButton">Register</button>
+    <?php endif; ?>
+</div>
+
+<script>
+    document.getElementById("myButton").onclick = function () {
+        location.href = BASE_URL+"affiliate/account/new";
+    };
+    function copyToClipboard() {
+        let copyText = document.getElementById('refer');
+        copyText.select();
+        document.execCommand("copy");
+        alert("Copied the text: " + copyText.value);
+    }
+</script>

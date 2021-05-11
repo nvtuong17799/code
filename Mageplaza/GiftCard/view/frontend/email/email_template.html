@@ -1,0 +1,8 @@
+{{template config_path="design/email/header_template"}}
+<!--@subject {{trans "This is gift card by Your Order %incrementId" incrementId=$order.increment_id }} @-->
+<table>
+    <tr>{{trans
+    "Your gift card: %templateVar."
+    templateVar=$templateVar}}</tr>
+</table>
+{{template config_path="design/email/footer_template"}}

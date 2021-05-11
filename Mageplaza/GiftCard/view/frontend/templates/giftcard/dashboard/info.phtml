@@ -1,0 +1,41 @@
+<?php
+/** @var \Mageplaza\GiftCard\Block\Mygiftcard\Dashboard\Info $block */
+?>
+<div class="block block-dashboard-info">
+    <div class="block-title"><strong><?= $block->escapeHtml(__('Gift Card Information')) ?></strong></div>
+    <div class="block-content">
+        <div class="box box-information">
+            <strong class="box-title">
+                <span><?= $block->escapeHtml(__('Balance')) ?></span>
+            </strong>
+            <div class="box-content">
+                <p>
+                    <?= $block->escapeHtml($block->getCurrencyWithFormat($block->getBalance())) ?><br>
+                </p>
+            </div>
+        </div>
+        <?php if ($block->getRedeem() == 1) : ?>
+            <div class="box">
+                <form class="form" action="<?php echo $block->getFormAction() ?>" method="post">
+                    <strong class="box-title">
+                        <span><?= $block->escapeHtml(__('Redeem')) ?></span>
+                    </strong>
+                        <div class="">
+                            <input class="redeem" name="redeem" type="text" id="redeem" placeholder="Enter gift card code" required>
+                            <button class="action btn-redeem" title="Redeem" type="submit">
+                                <span>Redeem</span>
+                            </button>
+                        </div>
+                </form>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<style>
+    .btn-redeem{
+        background-color:#00ffff;
+    }
+    input.redeem{
+        width: 75%;
+    }
+</style>
