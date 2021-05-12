@@ -25,4 +25,12 @@
         <plugin name="before_collect_totals" type="Mageplaza\Affiliate\Plugin\frontend\ReCollectTotals" sortOrder="3"/>
     </type>
 
+    <type name="Magento\Checkout\Block\Cart\Coupon">
+        <plugin name="apply_affiliate_code" type="Mageplaza\Affiliate\Plugin\frontend\ApplyAffiliateCode" sortOrder="2"/>
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\CouponPost">
+        <plugin name="plugin_controller_apply_affiliate_code" type="Mageplaza\Affiliate\Plugin\frontend\ApplyAffiliateCode" sortOrder="1"/>
+    </type>
+
 </config>

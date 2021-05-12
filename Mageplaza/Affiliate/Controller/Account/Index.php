@@ -8,8 +8,6 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
 use Mageplaza\Affiliate\Helper\Data;
 
-;
-
 class Index extends Action
 {
     protected $resultPageFactory = false;

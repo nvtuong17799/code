@@ -1,6 +1,7 @@
 <?php
 namespace Mageplaza\Affiliate\Helper;
 
+use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Framework\Escaper;
@@ -12,36 +13,35 @@ class Email extends \Magento\Framework\App\Helper\AbstractHelper
     protected $escaper;
     protected $transportBuilder;
     protected $logger;
+    protected $customerFactory;
 
     public function __construct(
         Context $context,
         StateInterface $inlineTranslation,
         Escaper $escaper,
-        TransportBuilder $transportBuilder
+        TransportBuilder $transportBuilder,
+        CustomerFactory $customerFactory
     ) {
         parent::__construct($context);
         $this->inlineTranslation = $inlineTranslation;
         $this->escaper = $escaper;
         $this->transportBuilder = $transportBuilder;
         $this->logger = $context->getLogger();
+        $this->customerFactory = $customerFactory;
     }
 
-    public function sendEmail($arr, $email)
+    public function sendEmail($value, $customerId)
     {
-        $str = '';
-        $i = 1;
+        $customer = $this->customerFactory->create();
+        $customer->load($customerId);
         try {
             $this->inlineTranslation->suspend();
             $sender = [
-                'name' => $this->escaper->escapeHtml('Gift Card'),
+                'name' => $this->escaper->escapeHtml('Affiliate Commission'),
                 'email' => $this->escaper->escapeHtml('tuongnv@mageplaza.com'),
             ];
-            foreach ($arr as $item){
-                $str .= $i.". ".$item."/    ";
-                $i++;
-            }
             $transport = $this->transportBuilder
-                ->setTemplateIdentifier('email_template')
+                ->setTemplateIdentifier('affiliate_email')
                 ->setTemplateOptions(
                     [
                         'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
@@ -49,10 +49,10 @@ class Email extends \Magento\Framework\App\Helper\AbstractHelper
                     ]
                 )
                 ->setTemplateVars([
-                    'templateVar'  => $str,
+                    'templateVar'  => $value,
                 ])
                 ->setFrom($sender)
-                ->addTo($email)
+                ->addTo($customer->getEmail())
                 ->getTransport();
             $transport->sendMessage();
             $this->inlineTranslation->resume();

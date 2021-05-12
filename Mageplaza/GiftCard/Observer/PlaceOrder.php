@@ -60,7 +60,9 @@ class PlaceOrder implements \Magento\Framework\Event\ObserverInterface
                 }
             }
         }
-//        $this->_helperEmail->sendEmail($codes, $order->getData('customer_email'));
+        if(!empty($codes)){
+            $this->_helperEmail->sendEmail($codes, $order->getData('customer_email'));
+        }
     }
 
 

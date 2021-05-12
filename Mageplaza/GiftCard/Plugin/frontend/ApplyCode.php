@@ -10,7 +10,6 @@ class ApplyCode{
     protected $_messageManager;
     protected $_url;
     protected $_checkoutSession;
-    protected $_cart;
     protected $_helperData;
 
     public function __construct(
@@ -20,7 +19,6 @@ class ApplyCode{
         \Mageplaza\GiftCard\Model\GiftCardFactory $giftCardFactory,
         \Magento\Framework\UrlInterface $url,
         \Magento\Checkout\Model\Session $checkoutSession,
-        \Magento\Checkout\Model\Cart $cart,
         \Mageplaza\GiftCard\Helper\Data $helperData
     ) {
         $this->_checkoutSession = $checkoutSession;
@@ -29,7 +27,6 @@ class ApplyCode{
         $this->_resultFactory = $resultFactory;
         $this->_request = $request;
         $this->_giftCardFactory = $giftCardFactory;
-        $this->_cart = $cart;
         $this->_helperData = $helperData;
     }
 
@@ -41,7 +38,7 @@ class ApplyCode{
                 ? ''
                 : trim($this->_request->getParam('coupon_code'));
 
-            $cartQuote = $this->_cart->getQuote();
+            $cartQuote = $this->_checkoutSession->getQuote();
 
             $giftCard = $this->_giftCardFactory->create();
             $giftCard->load($couponCode, 'code');

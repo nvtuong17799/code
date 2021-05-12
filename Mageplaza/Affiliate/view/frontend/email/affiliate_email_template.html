@@ -1,0 +1,8 @@
+{{template config_path="design/email/header_template"}}
+<!--@subject {{trans "Affiliate commission by Order %incrementId" incrementId=$order.increment_id }} @-->
+<table>
+    <tr>{{trans
+    "Your amount commission have changed: +$%templateVar into your wallet"
+    templateVar=$templateVar}}</tr>
+</table>
+{{template config_path="design/email/footer_template"}}
