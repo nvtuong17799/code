@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 namespace Mageplaza\GiftCard\Ui\Component\Listing\Columns;
 
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
@@ -11,10 +7,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
 /**
- * Class ProductActions
- *
- * @api
- * @since 100.0.2
+ * Class GiftCardActions
+ * @package Mageplaza\GiftCard\Ui\Component\Listing\Columns
  */
 class GiftCardActions extends Column
 {

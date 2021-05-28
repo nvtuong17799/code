@@ -1,0 +1,179 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Blog
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+/** @var \Mageplaza\Blog\Block\Frontend $block */
+?>
+
+<div class="mp-blog-rss">
+    <a href="<?= $block->getRssUrl('post/rss') ?>" class="bb-rss-icon">
+        <img src="<?= $this->getViewFileUrl('Mageplaza_Blog::media/images/rss.png') ?>" width="16px">
+    </a>
+</div>
+<div class="toolbar">
+    <div class="modes">
+        <label class="sorter-label" for="modes"><?= $block->escapeHtml(__('View as')) ?></label>
+        <select id="modes" name="modes" class="sorter-options">
+            <option value="grid" <?= $block->isGridView() ? 'selected=/"selected/"' : '' ?>>
+                <?= $block->escapeHtml(__('Grid')) ?>
+            </option>
+            <option value="list" <?= $block->isGridView() == false ? 'selected=/"selected/"' : '' ?>>
+                <?= $block->escapeHtml(__('List')) ?>
+            </option>
+        </select>
+    </div>
+</div>
+<div class="post-list-content" id="mpblog-list-container">
+    <?php $postCollection = $block->getPostCollection(); ?>
+    <?php if ($postCollection && $postCollection->getSize()) : ?>
+        <?php if ($block->getCategoryImage()) : ?>
+        <div class="post-view-image col-xs-12">
+            <img class="img-responsive"
+                 src="<?= $block->resizeImage($block->getCategoryImage(), '400px', 'category'); ?>"
+                 alt=""/>
+        </div>
+        <?php endif; ?>
+        <?php if ($block->isSlider()) : ?>
+            <div class="owl-carousel owl-theme">
+            <?php foreach ($postCollection as $post) : ?>
+                <div class="item post-list-item ">
+                    <div class="post-item-wraper">
+                        <div class="post-image">
+                            <?php if ($post->getImage()) : ?>
+                                <a href="<?= $post->getUrl() ?>">
+                                    <img class="img-responsive"
+                                         src="<?= $block->resizeImage($post->getImage(), '400x'); ?>"
+                                         alt="<?= $block->escapeHtml($post->getName()); ?>"/>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="post-info-wraper">
+                            <h2 class="mp-post-title">
+                                <a class="post-link-title"
+                                   title="<?= $block->escapeHtml($post->getName()); ?>"
+                                   href="<?= $post->getUrl() ?>">
+                                    <?= $post->getName(); ?>
+                                </a>
+                            </h2>
+                            <div class="mp-post-info">
+                                <?= $block->getPostInfo($post); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+        <div class="post-list-body">
+            <?php /** @var \Mageplaza\Blog\Model\Post $post */
+            foreach ($postCollection as $post) : ?>
+                <div class="post-list-item col-mp<?= $block->isGridView() ? ' post-item-grid mp-'. $block->getBlogPerRow() .' mp-xs-12' : ' post-item-list mp-12'; ?>">
+                    <div class="post-item-wraper">
+                        <?php if ($post->getImage()) : ?>
+                            <div class="post-image">
+                                <a href="<?= $post->getUrl() ?>">
+                                    <img class="img-responsive"
+                                         src="<?= $block->resizeImage($post->getImage(), '400px'); ?>"
+                                         alt="<?= $block->escapeHtml($post->getName()); ?>"/>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <div class="post-info-wraper">
+                            <h2 class="mp-post-title">
+                                <a class="post-link-title" title="<?= $block->escapeHtml($post->getName()); ?>"
+                                   href="<?= $post->getUrl() ?>">
+                                    <?= $post->getName(); ?>
+                                </a>
+                            </h2>
+                            <div class="mp-post-info">
+                                <?= $block->getPostInfo($post); ?>
+                            </div>
+                            <div class="rating-summary">
+                                <?php $starRating = $post->getData('rating_star') ? $post->getData('rating_star') : 0; ?>
+                                <div class="rating-result">
+                                     <span style="width:<?= ($starRating/5)*100 ?>%">
+                                     </span>
+                                </div>
+
+                                <span id="number-review">&nbsp;<?= $post->getData('rating_number') ? $post->getData('rating_number'): 0;?>
+                                </span>
+                                <span>Reviews</span>
+                            </div>
+                            <div class="post-short-description">
+                                <p><?= $block->maxShortDescription($post->getShortDescription()); ?></p>
+                            </div>
+                            <div class="mp-clearfix"></div>
+                            <div class="mp-post-meta-info mp-alignright">
+                                <div class="actions">
+                                    <a class="mp-read-more" href="<?= $post->getUrl(); ?>"
+                                       title="<?= __('Read More'); ?>">
+                                        <?= __('Read More'); ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="mp-clear"></div>
+        </div>
+        <?php endif ?>
+        <?= $block->getPagerHtml() ?>
+    <?php else : ?>
+        <?= __('There are no posts at this moment'); ?>
+    <?php endif; ?>
+    <?= $this->getChildHtml('additional'); ?>
+</div>
+<script>
+    require(['jquery'], function ($) {
+        $('.limiter').css('float', 'right');
+        $('#modes').change(function(){
+            var view = $('.post-list-item');
+            var valueSelect = $('select[name=modes]').val();
+            $.ajax({
+                url: this.url,
+                success: function(response){
+                    if($(view).hasClass('post-item-grid') && valueSelect === 'list'){
+                        $(view).removeClass('post-item-grid mp-<?= $block->getBlogPerRow()?> mp-xs-12').addClass('post-item-list mp-12');
+                    }else if($(view).hasClass('post-item-list') && valueSelect === 'grid'){
+                        $(view).removeClass('post-item-list mp-12').addClass('post-item-grid mp-xs-12 mp-<?= $block->getBlogPerRow()?>');
+                    }
+                }
+            });
+        })
+    });
+</script>
+<script>
+    require([
+        'jquery',
+        'owlCarousel'
+    ], function ($) {
+        'use strict';
+        $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                items:1,
+                touchDrag: true,
+                loop:false,
+                margin:10,
+            });
+        });
+    });
+</script>
+
