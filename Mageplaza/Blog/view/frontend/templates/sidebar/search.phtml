@@ -34,6 +34,27 @@ $type = $this->getSidebarConfig('search/search_by');
             <span><?= __('Search'); ?></span>
         </label>
         <div class="control">
+            <select id="select-type" name="selectType">
+                <option value="all" <?= ($type == 'all') ? 'selected' : '' ?>>
+                    <?= $block->escapeHtml(__('All'))?>
+                </option>
+                <option value="<?=\Mageplaza\Blog\Helper\Data::TYPE_POST?>"
+                <?= ($type == \Mageplaza\Blog\Helper\Data::TYPE_POST) ? 'selected' : '' ?>>
+                    <?= $block->escapeHtml(__('Posts'))?>
+                </option>
+                <option value="<?=\Mageplaza\Blog\Helper\Data::TYPE_CATEGORY?>"
+                    <?= ($type == \Mageplaza\Blog\Helper\Data::TYPE_CATEGORY) ? 'selected' : '' ?>>
+                    <?= $block->escapeHtml(__('Categories'))?>
+                </option>
+                <option value="<?=\Mageplaza\Blog\Helper\Data::TYPE_TOPIC?>"
+                    <?= ($type == \Mageplaza\Blog\Helper\Data::TYPE_TOPIC) ? 'selected' : '' ?>>
+                    <?= $block->escapeHtml(__('Topics'))?>
+                </option>
+                <option value="<?=\Mageplaza\Blog\Helper\Data::TYPE_TAG?>"
+                    <?= ($type == \Mageplaza\Blog\Helper\Data::TYPE_TAG) ? 'selected' : '' ?>>
+                    <?= $block->escapeHtml(__('Tags'))?>
+                </option>
+            </select>
             <input id="mpblog-search-box"
                    type="text"
                    name="query"
@@ -48,13 +69,67 @@ $type = $this->getSidebarConfig('search/search_by');
     </div>
     <div class="actions">
         <button type="submit" title="<?= __('Search') ?>" class="action search">
-            <i class="fa fa-search" aria-hidden="true" style="font-size: 16px;margin-top: 5px;"></i>
+            <i class="fa fa-search" aria-hidden="true" style="font-size: 16px;margin-top: 37px;"></i>
         </button>
     </div>
 </div>
 <script>
     require(['jquery', 'mpDevbridgeAutocomplete'], function ($) {
         var visibleImage = <?= $block->getSidebarConfig('search/show_image'); ?>;
+
+        //customer search
+        $('#select-type').change(function (){
+            $.ajax({
+                url: this.url,
+                success: function (data) {
+                    var result = null;
+                    switch ($('select[name=selectType]').val()){
+                       case 'all':
+                           result = <?= $block->getSearchAllData() ?>;
+                           break;
+                       case 'post':
+                           result = <?= $block->getSearchObjectData('post') ?>;
+                           break;
+                       case 'category':
+                           result = <?= $block->getSearchObjectData('category') ?>;
+                           break;
+                       case 'topic':
+                           result = <?= $block->getSearchObjectData('topic') ?>;
+                           break;
+                       case 'tag':
+                            result = <?= $block->getSearchObjectData('tag') ?>;
+                           break;
+                   }
+                    $('#mpblog-search-box').autocomplete({
+                        lookup: result,
+                        lookupLimit: <?= $block->getSidebarConfig('search/search_limit') ?: 10; ?>,
+                        maxHeight: 2000,
+                        minChars: <?= $block->getSidebarConfig('search/min_chars') ?: 1; ?>,
+                        autoSelectFirst: true,
+                        showNoSuggestionNotice: true,
+                        triggerSelectOnValidInput: false,
+                        onSelect: function (suggestion) {
+                            window.location.href = suggestion.url;
+                        },
+                        formatResult: function (suggestion, currentValue) {
+                            var additionClass = '';
+                            var html = "<div class='mpblog-suggestion'>";
+                            if (visibleImage) {
+                                html += "<div class='mpblog-suggestion-left'><img class='img-responsive' src='" + suggestion.image + "' /></div>";
+                                additionClass = 'image-visible';
+                            }
+                            html += "<div class='mpblog-suggestion-right " + additionClass + "'>" +
+                                "<div class='mpblog-product-line mpblog-product-name'>" + suggestion.value + "</div>" +
+                                "<div class='mpblog-product-des'><p class='mpblog-short-des'>" + suggestion.desc + "</p></div></div></div>";
+
+                            return html;
+                        }
+                    });
+                }
+            });
+        })
+
+        //admin configuration
         $('#mpblog-search-box').autocomplete({
             lookup: <?= ($type == 'all') ? $block->getSearchAllData() : $block->getSearchObjectData($type) ?>,
             lookupLimit: <?= $block->getSidebarConfig('search/search_limit') ?: 10; ?>,

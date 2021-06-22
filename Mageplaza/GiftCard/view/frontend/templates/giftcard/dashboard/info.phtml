@@ -16,7 +16,7 @@
         </div>
         <?php if ($block->getRedeem() == 1) : ?>
             <div class="box">
-                <form class="form" action="<?php echo $block->getFormAction() ?>" method="post">
+                <form class="form" action="<?= $block->getFormAction() ?>" method="post">
                     <strong class="box-title">
                         <span><?= $block->escapeHtml(__('Redeem')) ?></span>
                     </strong>

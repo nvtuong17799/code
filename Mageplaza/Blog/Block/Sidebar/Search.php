@@ -36,7 +36,7 @@ class Search extends Frontend
      * @return string
      * @throws NoSuchEntityException
      */
-    public function getSearchObjectData($type){
+    public function getSearchObjectData($type = null){
         $result    = [];
         $collection     = $this->helperData->getObjectList($type);
         $limitDesc = (int) $this->getSidebarConfig('search/description');
