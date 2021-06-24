@@ -57,4 +57,11 @@
             </argument>
         </arguments>
     </type>
+
+    <preference for="Mageplaza\Blog\Block\Post\View"
+                type="Magento\HelloWorld\Block\Post\Test" />
+
+<!--    <preference for="Mageplaza\Blog\Block\Design"-->
+<!--                type="Magento\HelloWorld\Block\Post\Test" />-->
+
 </config>
