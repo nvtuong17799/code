@@ -23,7 +23,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job name="mageplaza_productfeed_generate_cron" instance="Mageplaza\ProductFeed\Cron\Generate" method="execute">
-            <schedule>*/30 * * * *</schedule>
+            <schedule>*/1 * * * *</schedule>
         </job>
     </group>
 </config>

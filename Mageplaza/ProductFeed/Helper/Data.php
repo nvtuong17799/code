@@ -895,6 +895,16 @@ class Data extends CoreHelper
                 $bundleObj = $oriProduct->getPriceInfo()->getPrice('final_price');
                 $finalPrice = $bundleObj->getMaximalPrice()->getValue();
             }
+            elseif ($oriProduct->getTypeId()==='configurable'){
+                $price = 0;
+                $childProductCollection =  $oriProduct->getTypeInstance()->getUsedProducts($oriProduct);
+                foreach($childProductCollection as $item){
+                    if( $item->getPrice() >= $price ) {
+                        $price = $item->getPrice();
+                    }
+                }
+                $finalPrice = $this->convertPrice($price, $feed->getStoreId());
+            }
             else{
                 $finalPrice = $this->convertPrice($oriProduct->getFinalPrice(), $feed->getStoreId());
             }
@@ -1210,17 +1220,9 @@ class Data extends CoreHelper
             $this->urlModel->setScope($storeId);
         }
 
-        if($this->getConfigurableProductIdByChild($product->getId())){
+        if($this->getProductIdByChild($product->getId())){
             $product = $this->productFactory->create()
-                ->load($this->getConfigurableProductIdByChild($product->getId()));
-        }
-        elseif ($this->getGroupedProductIdByChild($product->getId())){
-            $product = $this->productFactory->create()
-                ->load($this->getGroupedProductIdByChild($product->getId()));
-        }
-        elseif ($this->getBundleProductIdByChild($product->getId())){
-            $product = $this->productFactory->create()
-                ->load($this->getBundleProductIdByChild($product->getId()));
+                ->load($this->getProductIdByChild($product->getId()));
         }
 
         $routeParams['id'] = $product->getId();
@@ -1237,26 +1239,48 @@ class Data extends CoreHelper
         return $this->urlModel->getUrl('catalog/product/view', $routeParams);
     }
 
-    public function getConfigurableProductIdByChild($childId){
-        $parentId = $this->configurable->getParentIdsByChild($childId);
-        if($parentId){
+    public function getProductIdByChild($childId){
+        $parentId = [];
+        $configurable = $this->configurable;
+        $bundle = $this->bundle;
+        $grouped = $this->grouped;
+        if ($configurable->getParentIdsByChild($childId)){
+            $parentId = $configurable->getParentIdsByChild($childId);
+        }
+        elseif ($bundle->getParentIdsByChild($childId)){
+            $parentId = $bundle->getParentIdsByChild($childId);
+        }
+        elseif ($grouped->getParentIdsByChild($childId)){
+            $parentId = $grouped->getParentIdsByChild($childId);
+        }
+
+        if($parentId != null){
             return $parentId[0];
         }
+
         return null;
     }
-    public function getGroupedProductIdByChild($childId){
-        $parentId = $this->grouped->getParentIdsByChild($childId);
-        if($parentId){
-            return $parentId[0];
-        }
-        return null;
-    }
-    public function getBundleProductIdByChild($childId){
-        $parentId = $this->bundle->getParentIdsByChild($childId);
-        if($parentId){
-            return $parentId[0];
-        }
-        return null;
-    }
+
+//    public function getConfigurableProductIdByChild($childId){
+//        $parentId = $this->configurable->getParentIdsByChild($childId);
+//        if($parentId){
+//            return $parentId[0];
+//        }
+//        return null;
+//    }
+//    public function getGroupedProductIdByChild($childId){
+//        $parentId = $this->grouped->getParentIdsByChild($childId);
+//        if($parentId){
+//            return $parentId[0];
+//        }
+//        return null;
+//    }
+//    public function getBundleProductIdByChild($childId){
+//        $parentId = $this->bundle->getParentIdsByChild($childId);
+//        if($parentId){
+//            return $parentId[0];
+//        }
+//        return null;
+//    }
 
 }

@@ -119,14 +119,14 @@ class Generate
         $frequency = $feed->getFrequency();
         $dayOfWeek = $feed->getCronRunDayOfWeek();
         $dayOfMonth = $feed->getCronRunDayOfMonth();
-        if ($this->isGenerate($cronRunTime, $lastCron, $frequency, $dayOfWeek, $dayOfMonth)) {
+//        if ($this->isGenerate($cronRunTime, $lastCron, $frequency, $dayOfWeek, $dayOfMonth)) {
             try {
                 $this->helper->generateAndDeliveryFeed($feed, 0, 1);
                 $this->feedFactory->create()->load($feed->getId())->setLastCron($this->dateTime->date())->save();
             } catch (Exception $e) {
                 $this->logger->critical($e);
             }
-        }
+//        }
     }
 
     /**
