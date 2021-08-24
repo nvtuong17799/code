@@ -908,6 +908,10 @@ class Data extends CoreHelper
             else{
                 $finalPrice = $this->convertPrice($oriProduct->getFinalPrice(), $feed->getStoreId());
             }
+            /* xử lý sản phẩm có tax(VAT) */
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $taxHelper = $objectManager->get('Magento\Catalog\Helper\Data');
+            $taxPrice = $taxHelper->getTaxPrice($oriProduct, $finalPrice, true); //taxPrice = price+tax;
 
             $storeId    = $feed->getStoreId() ?: $this->storeManager->getDefaultStoreView()->getId();
             $product->setStoreId($storeId);
